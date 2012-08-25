@@ -1,0 +1,25 @@
+Sliding Puzzle problem:
+Given initial state of the board, find move sequences to get sorted position
+
+Implementation : A* algorithm
+Enqueue all the nodes to be explored and explore based on a heurestic
+
+(TODO)
+Write basic outline of program with functions and debug routines
+    Have a array for the heurestic
+    An array for current state of the board
+    Moves are to be stored? (To read implementation of A*)
+Implementing the actual algorithm
+(DONE)
+
+
+____________________________________________________________________________
+The exact problem statement for the task 1 (sliding_puzzle) is :
+
+Sliding puzzle problems are very standard problems studied in the field of Artificial
+Intelligence. Details of the Fifteen problem (one of the sliding puzzle problems)
+can be found here: http://en.wikipedia.org/wiki/Fifteen_puzzle. Your first task is to
+write a program which solves this problem.
+Given an initial (distorted) state of the board, find a sequence of moves which lead to
+the "sorted" position of the board. Keep flexibility while writing the code so that we
+can easily test your algorithm on any random initial state of the board.
