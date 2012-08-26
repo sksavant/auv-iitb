@@ -1,0 +1,30 @@
+#!/usr/bin/python
+import datetime
+import time
+#import subprocess
+import os,sys
+
+fin=open("/home/savant/auv-iitb/.time","r")
+i=int(fin.readline())
+fin.close()
+#save lastmailsent and read
+while(True):
+    now=datetime.datetime.now()
+    yesterday21=datetime.datetime(now.year,now.month,now.day-1,21,0,0)
+    today21=datetime.datetime(now.year,now.month,now.day,21,0,0)
+    assert now>yesterday21
+    if now.time()>today21.time() and i==now.day-1:
+        print "Will send mail soon"
+        time.sleep(60)
+        #If >2100 today, then get gitlog and send mail
+        lastmailsent=datetime.datetime.now()
+        os.system("git log --before=\'"+today21.ctime()+"\' --since=\'"+yesterday21.ctime()+"\' >log.txt")
+        i=i+1
+        f=open("/home/savant/auv-iitb/.time","w")
+        print "Calling send_mail"
+        os.system("send_mail")
+        f.write(str(i))
+        f.close()
+        #sys.exit()
+    else:
+        time.sleep(1800)

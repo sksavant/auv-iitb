@@ -1,0 +1,6 @@
+test*
+tst*
+log*
+daily*
+.*
+*.out
