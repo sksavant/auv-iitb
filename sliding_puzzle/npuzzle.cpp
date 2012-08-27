@@ -117,12 +117,13 @@ vector<vector<int> > moved(vector<vector<int> > board,const int move[2]){
 int main(){
     //Parameters declaration
     const int moves[4][2]={{0,-1},{1,0},{0,1},{-1,0}}; //up,right,down,left
-	vector<vector<vector<int> > > board_states_to_explore;
+	const string moves_verbose[4]={"up","right","down","left"};
+    vector<vector<vector<int> > > board_states_to_explore;
     vector<vector<vector<int> > > board_states_explored;
     vector<vector<int> > board,idealboard,newboard;
     vector<vector<vector<int> > > all_inputs;
     vector<vector<int> > moves_state;
-    vector<int> heuristic;
+    vector<int> heuristic,newmoves;
     bool notfoundthegoal,nosuchboard;
     int boardindex,cost;
     //Has the state of the board
@@ -179,19 +180,23 @@ int main(){
                         print_board_state(newboard); // for debug?
                         board_states_to_explore.push_back(newboard);
                         heuristic.push_back(find_heuristic(newboard,idealboard));
+                        newmoves=moves_state[boardindex];
+                        newmoves.push_back(moveit);
+                        moves_state.push_back(newmoves);
                     }
                 }
             }
             //TO remove board from board_states_to_explore
             board_states_to_explore.erase(board_states_to_explore.begin()+boardindex);
             heuristic.erase(heuristic.begin()+boardindex);
+            moves_state.erase(moves_state.begin()+boardindex);
             board_states_explored.push_back(board);
             //go through the heurestic vector to find minimum and set it new board and boardindex
             cost=10000;
             boardindex=-1;
             for(int bin=0; bin<heuristic.size(); ++bin){
-                if(cost>heuristic[bin]){
-                    cost=heuristic[bin];
+                if(cost>heuristic[bin]+moves_state[bin].size()){
+                    cost=heuristic[bin]+moves_state[bin].size();
                     boardindex=bin;
                 }
             }
@@ -207,6 +212,9 @@ int main(){
         if(not notfoundthegoal){
             cout<<"Yay! Found the goal, printing moves\n";
             print_board_state(board);
+            for(int i=0;i<moves_state[boardindex].size();++i){
+                cout<<moves_verbose[moves_state[boardindex][i]]<<" ";
+            }
         }
 
     }
