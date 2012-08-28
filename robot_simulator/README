@@ -1,0 +1,16 @@
+Task 2 : Robot Simulator
+
+Imagine a "point" robot living in a two-dimensional world. The robot 
+has a fixed velocity but it's orientation can be changed to any direction 
+(say using a steering wheel).The robot also has a sensor which senses the
+perpendicular distance of itself from the X-axis. The aim of the robot is 
+to move along the positive x-axis while trying to keep its y-coordinate to
+be zero. This is VERY similar to the line-follower robot! To follow the 
+line, the robot uses a PID controller. Implement a program which simulates
+the environment and the robot. Display the path travelled by your robot in
+the simulated environment. Add some noise to the sensor measurement to 
+remove the ideality. This would imply that the robot would a take 
+different path each time you run your simulator.
+
+Refer to http://www.udacity.com/overview/Course/cs373/CourseRev/apr2012 for
+some guidance in this problem
