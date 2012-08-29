@@ -1,6 +1,7 @@
 //#define _USE_MATH_DEFINES //For M_PI
 #include<iostream>
 #include<cmath>
+#include<cstdio>
 using namespace std;
 
 // Controlling the robot i.e, try to move and then use PID Controller to control the robot so that it will follow the X-axis.
@@ -16,11 +17,11 @@ class robot {
         float x,y,orientation; //x and y are measure of distance in some units; orientation is in radians
 
     public:
-        robot(); //constructor
         void set(float, float, float);//sets the position and orientation to given values
         //void set_noise(measurementnoise); //Sets the measurement noise: Later!
         robot move(float , float ,float , float);
-        void sense(); // Sense the position and update belief
+        float sense(); // Sense the position and update belief
+        void print();
 
     private:
 
@@ -49,6 +50,7 @@ robot robot::move(float steering, float distance, float tol=0.0001, float max_st
     robot newrobot=robot();
     //set steering noise here if there or distance noise
     turn=tan(steering);
+    cout<<turn<<endl;
     if (abs(turn)<tol){
         newrobot.x=x+ distance*cos(orientation);
         newrobot.y=y+ distance*sin(orientation);
@@ -60,12 +62,43 @@ robot robot::move(float steering, float distance, float tol=0.0001, float max_st
         newrobot.orientation= fmod(orientation+turn,float(2.0*M_PI));
         newrobot.x=center_x+sin(orientation)*radius;
         newrobot.y=center_y-cos(orientation)*radius;
+        printf("rad:%f cx:%f cy:%f or:%f x:%f y:%f\n",radius,center_x,center_y,newrobot.orientation,newrobot.x,newrobot.y);
     }
+    newrobot.print();
     return newrobot;
 }
 
-int main(){
-    cout<<M_PI<<endl;
+float robot::sense()
+{
+    return y;//To give errored measurement
+    //If error in sensing/measurement of position: return x,.y.
+}
 
+void robot::print()
+{
+    printf("[x=%f y=%f orient=%f]\n",x,y,orientation);
+}
+
+void follow_the_line(robot robot, float param1=0.1, float param2=3.0, float param3=0.001){ //PID Controller function
+    float speed=1.0,measurement,prevmeasure,sum; //Equals distance assuming time interval of 1
+    int iterations=100;
+    sum=0; //To integrate over the error
+    measurement=robot.y;
+    prevmeasure=robot.y;
+    for(int i=0; i<iterations; ++i){
+        measurement=robot.sense();
+        sum=sum+measurement;
+        robot=robot.move(-param1*measurement-param2*(measurement-prevmeasure)-param3*sum,speed);
+        prevmeasure=measurement;
+        robot.print();
+    }
+}
+
+int main(){
+    robot linefollower=robot();
+    linefollower.set(0,1,0);
+    //follow_the_line(linefollower);
+    linefollower=linefollower.move(0,10);
+    linefollower.move(0.01,1);
     return 0;
 }
