@@ -10,6 +10,7 @@ The initial board states are to be written in boardstates.in in the following fo
 .
 
 To compile and run the program run 'sh run.sh'
+<<<<<<< Updated upstream
 
 Limitations:
 Taking much time to run : To modify

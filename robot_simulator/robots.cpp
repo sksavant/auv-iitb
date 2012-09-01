@@ -161,7 +161,7 @@ void gradient_descent(robot* robo,float tolerance=0.000001)
             }
         }
         it=it+1;
-        printf("Twiddle# %d %f %f %f %f %f %f %f %f\n",it,params[0],params[1],params[2],diff_params[0],diff_params[1],diff_params[2],b_error,sum);
+        //printf("Twiddle# %d %f %f %f %f %f %f %f %f\n",it,params[0],params[1],params[2],diff_params[0],diff_params[1],diff_params[2],b_error,sum);
         sum=0;
         for (int i=0; i<param_no; ++i){
             sum+=abs(diff_params[i]);
