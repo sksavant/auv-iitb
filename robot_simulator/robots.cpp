@@ -4,6 +4,9 @@
 #include<cstdio>
 #include<iomanip>
 #include<complex>
+#include<vector>
+#include<numeric>
+#include<initializer_list>
 using namespace std;
 #include"normal.cpp"
 
@@ -78,25 +81,65 @@ void robot::printtofile(FILE* f,int i)
     fprintf(f,"%d %f\n",i,y);
 }
 
-void follow_the_line(robot* robot, float param1=0.3, float param2=0.1, float param3=0.001){ //PID Controller function
+float follow_the_line(robot* robot, vector<float>param=NULL ) //float param1=0.3, float param2=0.1, float param3=0.001){ //PID Controller function
+{
     int seed=time(NULL);
-    float speed=1.0,measurement,prevmeasure,sum,x2; //Equals distance assuming time interval of 1
+    if (param.size()==0){
+        vector<float> param(3,{0.2,0.0,0.0});
+    }
+    float speed=1.0,measurement,prevmeasure,sum,x2,error=0.0; //Equals distance assuming time interval of 1
     int iterations=1000;
     sum=0; //To integrate over the error
     measurement=robot->y;
     prevmeasure=robot->y;
     FILE* fin=fopen("robotpath.txt","w");
-    for(int i=0; i<iterations; ++i){
+    for(int i=0; i<iterations*2; ++i){
         measurement=robot->sense(seed++);
         sum=sum+measurement;
-        x2=-param1*measurement-param2*(measurement-prevmeasure)-param3*sum;
+        x2=-param[0]*measurement-param[1]*(measurement-prevmeasure)-param[2]*sum;
         robot->orientation= x2< -M_PI/2?-M_PI/2:(x2>M_PI/2?M_PI/2:x2);
         *robot=robot->moverobot(speed);
         prevmeasure=measurement;
         //robot->print();
+        if(i>=iterations){
+            error+=measurement;
+        }
         robot->printtofile(fin,i);
     }
     fclose(fin);
+    return error/float(iterations);
+}
+
+void gradient_descent(robot* robot,float tolerance=0.001)
+{
+    int param_no=3;
+    vector<float> diff_params(param_no,1.0);
+    vector<float> params(param_no,0.0);
+    float b_error=follow_the_line(robot,params),error;
+    int it=0;
+    while(accumulate(diff_params.begin(),diff_params.end(),0)>tolerance){
+        for (int i=0; i<=param_no; ++i){
+            params[i]+=diff_params[i];
+            error=follow_the_line(robot,params);
+            if (error<b_error){
+                b_error=error;
+                diff_params[i]*=1.1;
+            }else{
+                params[i]+=2.0*diff_params[i];
+                error=follow_the_line(robot,params);
+                if(error<b_error){
+                    b_error=error;
+                    diff_params[i]*=1.1;
+                }else{
+                    params[i]+=diff_params[i];
+                    diff_params[i]*=0.9;
+                }
+            }
+        }
+        it=it+1;
+        printf("Twiddle# %d %f %f %f %f\n",it,params[0],params[1],params[2],b_error);
+    }
+
 }
 
 int main(){
@@ -110,7 +153,7 @@ int main(){
     cin>>initial_orientation;
     linefollower.set(initial_x,initial_y,initial_orientation);
     linefollower.set_noise(2.0);
-    follow_the_line(&linefollower);
+    follow_the_line(&linefollower,{});
     linefollower=linefollower.moverobot(10);
     //linefollower.orientation=0.01;
     //linefollower.moverobot(1);
