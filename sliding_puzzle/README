@@ -1,15 +1,31 @@
+The initial board states are to be written in boardstates.in in the following format:
+<no. of cases>
+//Each case is number n (no. of sides) followed by n lines each containing n 
+//space seperated integers representing the initial board configuration
+<n>
+<...>
+<...>
+.
+.
+.
+
+To compile and run the program run 'sh run.sh'
+
+Limitations:
+Taking much time to run : To modify
+___________________________________________________________________________
 Sliding Puzzle problem:
 Given initial state of the board, find move sequences to get sorted position
 
 Implementation : A* algorithm
 Enqueue all the nodes to be explored and explore based on a heurestic
 
-(TODO)
-Write basic outline of program with functions and debug routines
+(~TODO)
+~Write basic outline of program with functions and debug routines
     Have a array for the heurestic
     An array for current state of the board
     Moves are to be stored? (To read implementation of A*)
-Implementing the actual algorithm
+~Implementing the actual algorithm
 (DONE)
 
 

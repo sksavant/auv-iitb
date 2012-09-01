@@ -1,6 +1,8 @@
 Running the program:
 
 To run the program make sure gnuplot is installed and type 'sh run.sh' in the terminal
+Basic configuration with fixed pid parameters on branch master..
+On branch 2gradientdescent, not yet fully functional code to find the best parameters through gradient descent
 _________________________________________________________________________
 Task 2 : Robot Simulator
 
