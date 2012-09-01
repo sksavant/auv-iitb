@@ -1,0 +1,1 @@
+plot "./robotpath.txt"
