@@ -1,3 +1,7 @@
+Running the program:
+
+To run the program make sure gnuplot is installed and type 'sh run.sh' in the terminal
+_________________________________________________________________________
 Task 2 : Robot Simulator
 
 Imagine a "point" robot living in a two-dimensional world. The robot 
