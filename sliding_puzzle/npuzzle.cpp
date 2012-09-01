@@ -20,7 +20,7 @@ void print_board_state(vector<vector<int> > board){
 
 //Input is as follows :
     // <no of. testcases>
-    // <n> 
+    // <n>
     // <data>
     // .
     // .
@@ -66,14 +66,14 @@ vector<vector<int> > get_ideal_board(int n){
         idealboard.push_back(row);
     }
     idealboard[n-1][n-1]=0;
-    print_board_state(idealboard);
+    //print_board_state(idealboard);
     return idealboard;
 }
 
 int find_heuristic(vector<vector<int> > board,vector<vector<int> > idealboard){
     //heuristic: says how near the configuration is to the ideal
     int n=board.size();
-    int heuristic_value=0; 
+    int heuristic_value=0;
     /*
     //HEURESTIC 1 : //Say heuristic is no.of.blocks that are not in place
     //good enough(NO!) but not too good? To see peformance (NOT AT ALL GOOD)
@@ -82,7 +82,7 @@ int find_heuristic(vector<vector<int> > board,vector<vector<int> > idealboard){
             heuristic_value=(board[i][j]==idealboard[i][j])?(heuristic_value):(heuristic_value+1);
         }
     }*/
-    
+
     //HEURESTIC 2 : Manhattan distance
     for (int i=0; i<n; ++i){
         for(int j=0; j<n; ++j){
@@ -91,7 +91,7 @@ int find_heuristic(vector<vector<int> > board,vector<vector<int> > idealboard){
             }
         }
     }
-    cout<<heuristic_value<<endl;
+    //cout<<heuristic_value<<endl;
     return heuristic_value;
 }
 
@@ -145,8 +145,9 @@ int main(){
         moves_state.push_back( {});
         idealboard=get_ideal_board(board.size());
         heuristic.push_back(find_heuristic(board,idealboard));
+        printf("Initial given board configuration is :\n");
         print_board_state(board); //printing the intial configuration
-        //After getting the board, 
+        //After getting the board,
         int i=0;
         while (notfoundthegoal){
             ++i;
@@ -157,7 +158,7 @@ int main(){
             }
             for(int moveit=0; moveit<4; ++moveit){
                 //go through possible moves for the 0 block
-                //Get the new state if possible and append to board_states and 
+                //Get the new state if possible and append to board_states and
                 newboard.resize(0);
                 newboard=moved(board,moves[moveit]);
                 if (newboard!=board){ //=> has moved
@@ -177,7 +178,7 @@ int main(){
                         }
                     }
                     if (nosuchboard){ //if it is not there, add it to the states_to_explore
-                        print_board_state(newboard); // for debug?
+                        //print_board_state(newboard); // for debug?
                         board_states_to_explore.push_back(newboard);
                         heuristic.push_back(find_heuristic(newboard,idealboard));
                         newmoves=moves_state[boardindex];
@@ -202,15 +203,15 @@ int main(){
             }
             assert(boardindex!=-1);
             board=board_states_to_explore[boardindex];
-            cout<<"NextBoard\n";
-            print_board_state(board);
+            //cout<<"NextBoard\n";
+            //print_board_state(board);
 
-            //set board as the next one to explore : The one with minimum cost+heuristic 
+            //set board as the next one to explore : The one with minimum cost+heuristic
             //sleep(5); To debug
         }
         //set board as the next one to
         if(not notfoundthegoal){
-            cout<<"Yay! Found the goal, printing moves\n";
+            cout<<"Yay! Found the goal, printing moves for case# "<<boardinputindex<<endl;
             print_board_state(board);
             for(int i=0;i<moves_state[boardindex].size();++i){
                 cout<<moves_verbose[moves_state[boardindex][i]]<<" ";
