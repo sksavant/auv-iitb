@@ -65,7 +65,6 @@ robot robot::moverobot(float distance) //float tol=0.0001, float max_steering=M_
 float robot::sense(int seed)
 {
     float x2= r4_normal(y,measurementnoise,seed);
-    cout<<y<<" "<<x2<<" "<<measurementnoise<<endl;
     return x2;
     //To give errored measurement
     //If error in sensing/measurement of position: return x,.y.
